@@ -2,64 +2,33 @@ package pages;
 
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 
-    AndroidDriver driver;
-    WebDriverWait wait;
-
-    public LoginPage(AndroidDriver driver, WebDriverWait wait) {
-        this.driver = driver;
-        this.wait = wait;
+    public LoginPage(AndroidDriver driver) {
+        super(driver);
     }
 
     // Locators
-    By loginBtn = By.id("com.sportstechbrands.sportstechlive:id/login");
-    By emailSignIn = By.id("com.sportstechbrands.sportstechlive:id/ll_email_signin");
-    By emailField = By.id("com.sportstechbrands.sportstechlive:id/etEmail");
-    By passwordField = By.id("com.sportstechbrands.sportstechlive:id/etPassword");
-    By loginSubmitBtn = By.xpath("//android.widget.Button[@text='LOGIN']");
-    By homeLogo = By.id("com.sportstechbrands.sportstechlive:id/ivSportsTech");
-    By userName = By.id("com.sportstechbrands.sportstechlive:id/tv_user_name");
+    private By loginBtn = By.id("com.sportstechbrands.sportstechlive:id/login");
+    private By emailLogin = By.id("com.sportstechbrands.sportstechlive:id/ll_email_signin");
+    private By emailField = By.id("com.sportstechbrands.sportstechlive:id/etEmail");
+    private By passwordField = By.id("com.sportstechbrands.sportstechlive:id/etPassword");
+    private By loginButton = By.xpath("//android.widget.Button[@text='LOGIN']");
 
-    // Actions
-    public void navigateToLogin() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginBtn)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(emailSignIn)).click();
-    }
+    // 🔥 FULL LOGIN FLOW
+    public void login(String email, String password) {
 
-    public void enterEmail(String email) {
-        WebElement emailEl = wait.until(ExpectedConditions.elementToBeClickable(emailField));
-        emailEl.click();
-        emailEl.sendKeys(email);
-    }
+        click(loginBtn);
+        click(emailLogin);
 
-    public void enterPassword(String password) {
-        WebElement passEl = driver.findElement(passwordField);
-        passEl.click();
-        passEl.sendKeys(password);
-    }
+        type(emailField, email);
+        type(passwordField, password);
 
-    public void hideKeyboard() {
         try {
             driver.hideKeyboard();
-        } catch (Exception e) {
-            System.out.println("Keyboard already hidden");
-        }
-    }
+        } catch (Exception e) {}
 
-    public void clickLogin() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(loginSubmitBtn)).click();
-    }
-
-    public String verifyHomePage() {
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(homeLogo),
-                ExpectedConditions.visibilityOfElementLocated(userName)
-        ));
-        return driver.findElement(userName).getText();
+        click(loginButton);
     }
 }

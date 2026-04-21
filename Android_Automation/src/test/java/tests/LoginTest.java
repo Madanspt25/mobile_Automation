@@ -1,26 +1,25 @@
 package tests;
 
 import base.BaseTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.HomePage;
 import pages.LoginPage;
 
 public class LoginTest extends BaseTest {
 
     @Test
-    public void loginTest() throws InterruptedException {
+    public void loginTest() {
 
-        LoginPage loginPage = new LoginPage(driver, wait);
+        LoginPage loginPage = new LoginPage(driver);
+        HomePage homePage = new HomePage(driver);
 
-        loginPage.navigateToLogin();
-        loginPage.enterEmail(config.get("email"));
-        loginPage.enterPassword(config.get("password"));
+        System.out.println("--- TEST STARTED ---");
 
-        loginPage.hideKeyboard();
-        Thread.sleep(2000);
+        loginPage.login("protest@gmail.com", "Test@123");
 
-        loginPage.clickLogin();
+        Assert.assertTrue(homePage.isHomePageDisplayed(), "Login Failed");
 
-        String welcomeText = loginPage.verifyHomePage();
-        System.out.println("Login Successful: " + welcomeText);
+        System.out.println("Welcome Text: " + homePage.getWelcomeText());
     }
 }

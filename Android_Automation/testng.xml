@@ -2,7 +2,7 @@
 
 <suite name="Sportstech Appium Suite" parallel="false">
 
-    <test name="Login Test">
+    <test name="All Tests">
 
         <classes>
             <class name="tests.LoginTest"/>
